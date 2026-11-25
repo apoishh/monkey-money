@@ -1,0 +1,21 @@
+# Your real bank statements - never commit
+statements/*
+!statements/.gitkeep
+*.pdf
+
+# Your real workbook - keep personal copies out of git
+* - private.xlsx
+*private*.xlsx
+Personal Budget Pro*.xlsx
+
+# Excel lock / temp files
+~$*
+*.tmp
+
+# Python
+__pycache__/
+*.pyc
+
+# Local tool settings
+.claude/
+.vscode/

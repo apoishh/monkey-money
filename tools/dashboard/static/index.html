@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monkey Money</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>Monkey Money</h1>
+    <p class="muted" id="source">Loading…</p>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="overview" aria-selected="true">Overview</button>
+    <button role="tab" data-tab="spending">Spending</button>
+    <button role="tab" data-tab="investments">Investments</button>
+    <button role="tab" data-tab="future">Future plans</button>
+  </nav>
+</header>
+
+<main>
+  <div id="error" class="banner critical" hidden></div>
+
+  <!-- ============ OVERVIEW ============ -->
+  <section id="tab-overview" class="tab">
+    <div class="hero card">
+      <div>
+        <p class="label">Net worth</p>
+        <p class="hero-num" id="nw"></p>
+        <p class="muted" id="nw-sub"></p>
+      </div>
+      <div class="tiles" id="tiles"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Does it match the bank?</h2>
+        <div id="bank"></div>
+      </div>
+      <div class="card">
+        <h2>Is the data up to date?</h2>
+        <div id="fresh"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>What you own and owe</h2>
+      <p class="muted small">Assets at today's value, minus loans and card balances. Property and vehicles use your own market-value estimates (Loans sheet).</p>
+      <div class="chart-wrap tall"><canvas id="c-balance"></canvas></div>
+      <details><summary>Show as table</summary><div id="t-balance"></div></details>
+    </div>
+  </section>
+
+  <!-- ============ SPENDING ============ -->
+  <section id="tab-spending" class="tab" hidden>
+    <div class="filters">
+      <label>Period
+        <select id="sp-period"></select>
+      </label>
+      <label>Category
+        <select id="sp-cat"><option value="">All categories</option></select>
+      </label>
+      <span class="muted small" id="sp-note"></span>
+    </div>
+
+    <div class="tiles" id="sp-tiles"></div>
+
+    <div class="card">
+      <h2>Money in vs money out, by month</h2>
+      <p class="muted small">Income excludes money taken back out of investments; spending excludes money you invested.</p>
+      <div class="chart-wrap"><canvas id="c-monthly"></canvas></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2 id="cat-title">Where it went</h2>
+        <div class="chart-wrap tall"><canvas id="c-cats"></canvas></div>
+      </div>
+      <div class="card">
+        <h2 id="bud-title">Budget vs actual</h2>
+        <p class="muted small" id="bud-note"></p>
+        <div class="chart-wrap tall"><canvas id="c-budget"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Top places</h2>
+        <div id="merchants"></div>
+      </div>
+      <div class="card">
+        <h2>Transactions</h2>
+        <input type="search" id="tx-search" placeholder="Search details, category, amount…">
+        <div id="tx" class="scroll"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INVESTMENTS ============ -->
+  <section id="tab-investments" class="tab" hidden>
+    <div class="tiles" id="inv-tiles"></div>
+    <div class="card">
+      <h2>Value over time</h2>
+      <p class="muted small">Current value as you recorded it on the Investment sheet. Dashed = money you put in.</p>
+      <div class="filters"><label>Platform <select id="inv-pick"></select></label></div>
+      <div class="chart-wrap"><canvas id="c-inv"></canvas></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Where it sits</h2>
+        <div class="chart-wrap"><canvas id="c-alloc"></canvas></div>
+      </div>
+      <div class="card">
+        <h2>Each platform</h2>
+        <div id="inv-table"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FUTURE ============ -->
+  <section id="tab-future" class="tab" hidden>
+    <div class="card">
+      <h2>Try a plan</h2>
+      <p class="muted small">Starts from your last 12 months of real income and spending. Move the sliders to see what changes. Growth rates are your assumptions, not forecasts.</p>
+      <div class="sliders" id="sliders"></div>
+      <h3>Cut spending by category</h3>
+      <div class="sliders" id="cuts"></div>
+      <button class="link" id="reset">Reset to my real numbers</button>
+    </div>
+
+    <div class="tiles" id="fu-tiles"></div>
+
+    <div class="card">
+      <h2>Your goals</h2>
+      <p class="muted small" id="goal-note"></p>
+      <div id="goals"></div>
+    </div>
+
+    <div class="card">
+      <h2>Projected wealth</h2>
+      <div class="chart-wrap"><canvas id="c-proj"></canvas></div>
+      <p class="muted small">Savings &amp; investments = cash + savings + investments (not KWSP). Net worth adds KWSP and keeps property, vehicles, valuables and loans at today's value.</p>
+    </div>
+  </section>
+</main>
+
+<div id="tip" class="tip" hidden></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
