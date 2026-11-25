@@ -399,8 +399,11 @@ async function boot() {
   } else {
     Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
   }
+  // Local server -> live workbook. Anywhere else (the GitHub Pages demo) -> the exported sample data.json
+  const live = ["localhost", "127.0.0.1"].includes(location.hostname) && location.protocol === "http:"
+    && !new URLSearchParams(location.search).has("demo");  // ?demo = preview the static demo locally
   try {
-    const res = await fetch("/api/data", { cache: "no-store" });
+    const res = await fetch(live ? "/api/data" : "data.json", { cache: "no-store" });
     D = await res.json();
     if (D.error) throw new Error(D.error);
   } catch (e) {
@@ -408,7 +411,11 @@ async function boot() {
     $("#error").textContent = "Could not read the workbook: " + e.message;
     return;
   }
-  $("#source").textContent = `${D.source.file} · saved ${D.source.saved} · read-only`;
+  $("#source").textContent = live ? `${D.source.file} · saved ${D.source.saved} · read-only`
+    : `Demo · fictional sample data · as of ${dayName(D.today)}`;
+  // on GitHub Pages (USER.github.io/REPO/) point the demo banner at the repository
+  const gh = location.hostname.match(/^([^.]+)\.github\.io$/), repo = location.pathname.split("/").filter(Boolean)[0];
+  if (gh && repo && $("#repo-link")) $("#repo-link").href = `https://github.com/${gh[1]}/${repo}`;
   setupSpending(); setupInvestments(); setupFuture();
   renderAll();
   let start = location.hash.slice(1);

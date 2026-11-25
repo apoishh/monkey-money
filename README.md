@@ -9,6 +9,10 @@ A personal-finance kit for Malaysia, built on Excel and Windows:
 
 Everything runs **on your own PC**. Nothing is uploaded anywhere.
 
+### 👉 [Try the live demo](https://apoishh.github.io/monkey-money/)
+
+The demo uses fictional sample data and needs no install. Open it to see the dashboard before downloading anything.
+
 > `Monkey Money.xlsx` ships with **fictional sample data** for a made-up "Demo User" (about RM7M net worth), so you
 > can try everything straight away. Replace it with your own numbers when you're ready (see *Start with your own data*).
 
@@ -122,6 +126,21 @@ Goals come from the **Wealth Summary** sheet (rows 48–52). Growth rates are yo
    `python tools\statement_import.py import --workbook "Monkey Money - private.xlsx"`. For the dashboard, change
    `WORKBOOK` in `tools\dashboard\data.py`.
 
+## Online demo (GitHub Pages)
+
+The `docs/` folder is a static copy of the dashboard that reads `docs/data.json`, exported from the **sample**
+workbook. To publish it from your fork: repo **Settings → Pages → Deploy from a branch → `main` / `/docs` → Save**.
+After a minute it's live at `https://YOUR-USERNAME.github.io/monkey-money/` (for this repo: https://apoishh.github.io/monkey-money/).
+
+If you change the page code or the sample workbook, rebuild the demo:
+
+```
+python tools\dashboard\export_demo.py
+```
+
+The script only builds from `Monkey Money.xlsx` (the sample) and refuses anything else, so your real data can't end up
+in the public demo.
+
 ## Supported statements
 
 | Bank | Document | Check |
@@ -146,6 +165,8 @@ statements\                  drop PDFs here (git-ignored)
 tools\statement_parsers.py   PDF readers per bank
 tools\statement_import.py    rules, review, post, duplicate and bank checks
 tools\dashboard\             FastAPI server + static page (read-only)
+tools\dashboard\export_demo.py  rebuilds docs\ from the sample workbook
+docs\                        online demo for GitHub Pages (sample data only)
 ```
 
 *Not financial advice. The projections are arithmetic on your own assumptions.*
